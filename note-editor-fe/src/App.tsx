@@ -1,15 +1,15 @@
 import './App.scss'
-import Header from './components/header/Header'
-import Notes from './components/notes/Notes'
+import { Header } from './components/header/Header'
+import { Notes } from './components/notes/Notes'
 
-function App() {
+export default function App() {
 
   return (
     <div className="App">
-      <Header/>
-      <Notes />
+      <>
+        <Header/>
+        <Notes />
+      </>
     </div>
   )
 }
-
-export default App

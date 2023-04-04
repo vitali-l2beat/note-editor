@@ -1,10 +1,9 @@
-import React from 'react'
 import './Header.scss'
 
-function Header() {
+export function Header() {
   return (
-    <header>Header</header>
+    <header>
+      Note Editor
+    </header>
   )
 }
-
-export default Header
