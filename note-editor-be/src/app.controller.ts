@@ -1,22 +1,34 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Delete, Put } from '@nestjs/common/decorators';
 import { AppService } from './app.service';
+import { Note } from './note';
 
-@Controller('data')
+@Controller('notes')
 export class AppController {
   constructor(private appService: AppService) {}
 
   @Get()
-  async getData() {
+  async getNote() {
     return await this.appService.getNotes();
   }
 
   @Get(':id')
-  async getDataById(@Param('id') id: string) {
+  async getNoteById(@Param('id') id: string) {
     return await this.appService.getNoteById(Number(id));
   }
 
   @Post()
-  async createNote(@Body() note: any) {
+  async createNote(@Body() note: Note) {
     return await this.appService.createNote(note);
+  }
+
+  @Put()
+  async editNote(@Body() note: Note) {
+    return await this.appService.editNote(note);
+  }
+
+  @Delete(':id')
+  async deleteNote(@Param('id') id: string) {
+    return await this.appService.deleteNote(Number(id));
   }
 }

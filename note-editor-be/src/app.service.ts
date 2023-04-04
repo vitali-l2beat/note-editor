@@ -5,28 +5,82 @@ import { Note } from './note';
 
 @Injectable()
 export class AppService {
+  private readonly filePath = path.resolve(__dirname, '../data', 'data.json');
 
-  async getNotes() {
-    return 'Hello World!';
+  async getNotes(): Promise<Note[]> {
+    try {
+      const notes: Array<Note> = await fs.readJSON(this.filePath);
+      return notes;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'internal error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async getNoteById(id: number) {
-    return 'Hello World!' + id;
+    try {
+      const notes: Array<Note> = await fs.readJSON(this.filePath);
+      const note = notes.find((n) => n.id == id);
+      return note;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'internal error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async createNote(note: Note) {
     try {
-      const filePath = path.resolve(__dirname, '../data', String(note.id) + '.json');
-
-      if(!fs.existsSync(filePath)){
-        const notes = []
-        notes.push(note)
-        await fs.writeJSON(filePath, notes);
+      if (!fs.existsSync(this.filePath)) {
+        const notes = [];
+        notes.push(note);
+        await fs.writeJSON(this.filePath, notes);
+      } else {
+        const notes: Array<Note> = await fs.readJSON(this.filePath);
+        notes.push(note);
+        await fs.writeJSON(this.filePath, notes);
       }
-
+      return note;
     } catch (err) {
-      throw new HttpException(`internal error`, HttpStatus.BAD_REQUEST);
+      console.log(err);
+      throw new HttpException(
+        'internal error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
-    return note;
+  }
+
+  async editNote(note: Note) {
+    try {
+      await this.deleteNote(note.id);
+      const editedNote = await this.createNote(note);
+      return editedNote;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'internal error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async deleteNote(id: number) {
+    try {
+      const notes: Array<Note> = await fs.readJSON(this.filePath);
+      const filteredNotes = notes.filter((note) => note.id != id);
+      await fs.writeJSON(this.filePath, filteredNotes);
+      return filteredNotes;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'internal error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }
