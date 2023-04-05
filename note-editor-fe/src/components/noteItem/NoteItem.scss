@@ -26,6 +26,13 @@
       margin-top: 10px;
       overflow-wrap: break-word;
     }
+
+    .note__tags {
+      display: flex;
+      flex-direction: row;
+
+      margin-top: 20px;
+    }
   }
 
   .buttons {

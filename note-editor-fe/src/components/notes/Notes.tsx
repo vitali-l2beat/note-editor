@@ -13,7 +13,7 @@ export function Notes() {
   
   return (
     <div className='notes'>
-      {notes.map((note, index) => <NoteItem note={note} key={index}/>)}
+      {notes.map((note: Note, index: number) => <NoteItem note={note} key={index}/>)}
     </div>
   )
 }
