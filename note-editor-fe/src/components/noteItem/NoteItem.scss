@@ -24,7 +24,7 @@
 
     .note__text {
       margin-top: 10px;
-      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .note__tags {
@@ -49,10 +49,10 @@
 
       font-weight: 500;
       font-size: large;
-  
+
       color: gray;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         color: black;
       }

@@ -1,13 +1,9 @@
-import './NoteTags.scss'
+import './NoteTags.scss';
 
 interface NoteTagProps {
-  tag: string
+  tag: string;
 }
 
 export function NoteTag(props: NoteTagProps) {
-  return (
-    <div className='tag'>
-      {props.tag}
-    </div>
-  )
+  return <div className="tag">{props.tag}</div>;
 }

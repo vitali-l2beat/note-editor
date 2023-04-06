@@ -1,9 +1,5 @@
-import './Header.scss'
+import './Header.scss';
 
 export function Header() {
-  return (
-    <header>
-      Note Editor
-    </header>
-  )
+  return <header>Note Editor</header>;
 }
