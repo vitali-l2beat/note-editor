@@ -1,11 +1,44 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  OnModuleInit
+} from '@nestjs/common';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Note } from './note';
 
 @Injectable()
-export class AppService {
-  private readonly filePath = path.resolve(__dirname, '../data', 'data.json');
+export class AppService implements OnModuleInit {
+  private readonly filePath = path.resolve(__dirname, 'data.json');
+
+  onModuleInit() {
+    if (!fs.existsSync(this.filePath)) {
+      const exampleData = [
+        {
+          id: 'ae9c6cab-f5d3-4023-8ad0-03a8ea813a2f',
+          title: 'sdasd',
+          text: 'sdsads',
+          tags: 'dsasd'
+        },
+        {
+          id: '322651ea-93e6-4b67-919f-6c92cefc15c6',
+          title: '321312',
+          text: '321312',
+          tags: '312321'
+        },
+        {
+          id: '8621f4ca-b79e-4c08-9ab7-20afb9fb51e7',
+          title: '321312',
+          text: '321312',
+          tags: '#312321 #21321'
+        }
+      ];
+
+      fs.open(this.filePath, 'w+');
+      fs.writeJson(this.filePath, exampleData);
+    }
+  }
 
   async getNotes(): Promise<Note[]> {
     try {
