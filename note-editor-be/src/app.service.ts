@@ -10,7 +10,7 @@ import { Note } from './note';
 
 @Injectable()
 export class AppService implements OnModuleInit {
-  private readonly filePath = path.resolve(__dirname, 'data.json');
+  private readonly filePath = '/tmp/data.json';
 
   onModuleInit() {
     if (!fs.existsSync(this.filePath)) {
