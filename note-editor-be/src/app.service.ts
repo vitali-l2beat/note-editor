@@ -20,7 +20,7 @@ export class AppService {
     }
   }
 
-  async getNoteById(id: number) {
+  async getNoteById(id: string) {
     try {
       const notes: Array<Note> = await fs.readJSON(this.filePath);
       const note = notes.find((n) => n.id == id);
@@ -69,7 +69,7 @@ export class AppService {
     }
   }
 
-  async deleteNote(id: number) {
+  async deleteNote(id: string) {
     try {
       const notes: Array<Note> = await fs.readJSON(this.filePath);
       const filteredNotes = notes.filter((note) => note.id != id);

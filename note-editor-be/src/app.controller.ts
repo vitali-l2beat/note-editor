@@ -14,7 +14,7 @@ export class AppController {
 
   @Get(':id')
   async getNoteById(@Param('id') id: string) {
-    return await this.appService.getNoteById(Number(id));
+    return await this.appService.getNoteById(id);
   }
 
   @Post()
@@ -29,6 +29,6 @@ export class AppController {
 
   @Delete(':id')
   async deleteNote(@Param('id') id: string) {
-    return await this.appService.deleteNote(Number(id));
+    return await this.appService.deleteNote(id);
   }
 }
