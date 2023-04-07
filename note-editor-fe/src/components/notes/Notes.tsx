@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Note } from '../../models/Note';
 import { createNote, getNotes } from '../../service/Note.service';
 import { NoteItem } from '../noteItem/NoteItem';
@@ -12,7 +12,9 @@ export function Notes() {
   const [warning, setWarning] = useState(false);
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>();
-  const [tags, setTags] = useState<string>();
+  const [tags, setTags] = useState<string | undefined>('');
+  const [search, setSearch] = useState<string>('');
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
 
   useEffect(() => {
     getNotes().then((data) => setNotes(data));
@@ -31,17 +33,25 @@ export function Notes() {
       tags: tags
     };
 
-    console.log(newNote);
-    
-
     setNotes([...notes, newNote]);
     createNote(newNote);
     setModalActive(false);
   }
 
+  const getSortedNotes = useMemo( async () => {
+    return await setFilteredNotes(notes.filter((note: Note) => note.tags?.includes(search)));
+  }, [search]);
+
   return (
     <div className="notes">
-      {notes.map((note: Note, index: number) => (
+      <input
+        className="notes__search"
+        placeholder="search by tag"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {filteredNotes.map((note: Note, index: number) => (
         <NoteItem note={note} key={index} />
       ))}
       <Modal active={modalActive} setActive={setModalActive}>
