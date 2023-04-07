@@ -3,7 +3,7 @@ import { Delete, Put } from '@nestjs/common/decorators';
 import { AppService } from './app.service';
 import { Note } from './note';
 
-@Controller('notes')
+@Controller()
 export class AppController {
   constructor(private appService: AppService) {}
 
