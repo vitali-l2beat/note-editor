@@ -20,12 +20,15 @@ export function NoteItem(props: NoteItemProps) {
     ?.split(' ')
     .map((tag: string) => tag);
 
-  async function edit(title: string, text?: string, tags?: string) {
+  async function edit(title: string, text?: string, tags?: string | any) {
     if (title.length <= 0) {
       setWarning(true);
       return;
     }
-
+    
+    tags = await addNewTags(text);
+    tags = [...new Set(tags.split(" "))].join(" ");
+    
     const newNote: Note = {
       id: props.note.id,
       title: title,
@@ -33,10 +36,20 @@ export function NoteItem(props: NoteItemProps) {
       tags: tags
     };
 
-    console.log(newNote);
-
     await editNote(newNote);
     setModalActive(false);
+  }
+
+  async function addNewTags(text: string | undefined) {
+    const words = text?.replace(/(\r\n|\n|\r)/gm, " ").split(' ');
+    let newTags = tags;
+    
+    words?.forEach((word) => {
+      if (word.startsWith('#')){
+        newTags += ' ' + word;
+      }
+    })
+    return newTags?.trim();
   }
 
   return (
@@ -92,7 +105,7 @@ export function NoteItem(props: NoteItemProps) {
             type="text"
             placeholder="Enter tags"
             value={tags}
-            onChange={(e) => setTags(e.target.value)}
+            onChange={(e) => {setTags(e.target.value), console.log(tags)}}
           />
           <p className="newNote__notation">
             Please, use "#" character and separate tags with spaces
